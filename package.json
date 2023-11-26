@@ -2,5 +2,23 @@
   "dependencies": {
     "express": "^4.18.2",
     "joi": "^17.11.0"
-  }
+  },
+  "name": "be-cervicare",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muradha/be-cervicare.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/muradha/be-cervicare/issues"
+  },
+  "homepage": "https://github.com/muradha/be-cervicare#readme",
+  "description": ""
 }
