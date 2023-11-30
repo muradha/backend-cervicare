@@ -20,6 +20,7 @@ model User {
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   role            Role      @relation(fields: [roleId], references: [id])
+  articles         Article[]
 
   @@map("users")
 }
@@ -37,4 +38,24 @@ model Role {
 enum Gender {
   MALE
   FEMALE
+}
+
+model Article {
+  id        String  @id @default(uuid())
+  title     String  @unique @db.VarChar(200)
+  content   String  @db.MediumText
+  status    Status  @default(PENDING)
+  thumbnail String?
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@map("articles")
+}
+
+enum Status {
+  PENDING
+  REJECT
+  APPROVE
 }

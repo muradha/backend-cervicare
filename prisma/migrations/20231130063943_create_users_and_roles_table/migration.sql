@@ -5,7 +5,7 @@ CREATE TABLE `users` (
     `email` VARCHAR(200) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
     `profile_picture` VARCHAR(191) NULL,
-    `birth_date` DATE NOT NULL,
+    `birth_date` DATE NULL,
     `gender` ENUM('MALE', 'FEMALE') NULL,
     `phone` CHAR(20) NULL,
     `roleId` VARCHAR(191) NOT NULL,

@@ -23,7 +23,7 @@ const loginUserValidation = Joi.object({
 const updateUserValidation = Joi.object({
   name: Joi.string().max(160).optional(),
   email: Joi.string().email().pattern(/^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/).max(200)
-    .required(),
+    .optional(),
   password: Joi.string().pattern(/^[a-zA-Z0-9]{3,30}$/).max(191).optional(),
   birth_date: Joi.date().optional(),
   gender: Joi.string().valid('MALE', 'FEMALE').optional(),
