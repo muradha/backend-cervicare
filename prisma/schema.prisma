@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String    @id @default(uuid())
+  name            String    @db.VarChar(160)
+  email           String    @unique @db.VarChar(200)
+  password        String
+  profile_picture String?
+  birth_date      DateTime? @db.Date
+  gender          Gender?
+  phone           String?   @db.Char(20)
+  roleId          String
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  role            Role      @relation(fields: [roleId], references: [id])
+
+  @@map("users")
+}
+
+model Role {
+  id        String   @id @default(uuid())
+  name      String   @unique @db.VarChar(80)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  users     User[]
+
+  @@map("roles")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
