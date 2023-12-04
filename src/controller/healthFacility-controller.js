@@ -48,7 +48,7 @@ const update = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 const destroy = async (req, res, next) => {
   try {
@@ -63,10 +63,26 @@ const destroy = async (req, res, next) => {
   }
 };
 
+const addMedicalFacility = async (req, res, next) => {
+  try {
+    const { medicalFacilityId } = req.body;
+    const { healthFacilityId } = req.params;
+    const result = await healthFacilityService
+      .addMedicalFacility(healthFacilityId, medicalFacilityId);
+
+    res.status(201).json({
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   get,
   store,
   update,
   show,
   destroy,
+  addMedicalFacility,
 };

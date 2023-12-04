@@ -163,10 +163,21 @@ const destroy = async (healthFacilityId) => {
   return formatHealthFacility(healthFacility);
 };
 
+const addMedicalFacility = async (medicalFacilityId) => {
+  const data = await prismaClient.medicalCollaboration.findMany({
+    data: {
+      medicalFacilityId,
+    },
+  });
+
+  return data;
+};
+
 export default {
   get,
   store,
   update,
   show,
   destroy,
+  addMedicalFacility,
 };

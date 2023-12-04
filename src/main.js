@@ -1,4 +1,4 @@
-import { web } from './application/web.js';
+import web from './application/web.js';
 
 BigInt.prototype.toJSON = function () {
   return this.toString();

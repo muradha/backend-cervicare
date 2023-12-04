@@ -32,7 +32,13 @@ const store = async (request) => {
     throw new ResponseError(409, 'User Already Exists');
   }
 
-  createRequest.roleId = '02ca7703-9b4a-4c8f-9e7b-5652d59aa764';
+  const userRole = await prismaClient.role.findFirst({
+    where: {
+      name: 'user',
+    },
+  });
+
+  createRequest.roleId = userRole.id;
 
   if (createRequest.password) {
     createRequest.password = await bcrypt.hash(createRequest.password, 10);

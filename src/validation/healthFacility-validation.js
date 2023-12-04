@@ -31,4 +31,4 @@ const updateHealthFacilityValidation = Joi.object({
 export {
   storeHealthFacilityValidation,
   updateHealthFacilityValidation,
-}
+};

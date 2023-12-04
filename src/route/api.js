@@ -2,6 +2,7 @@ import express from 'express';
 import userController from '../controller/user-controller.js';
 import articleController from '../controller/article-controller.js';
 import healthFacilityController from '../controller/healthFacility-controller.js';
+import medicalFacilityController from '../controller/medicalFacility-controller.js';
 
 const userRouter = new express.Router();
 
@@ -22,5 +23,12 @@ userRouter.get('/health-facilities/:healthFacilityId', healthFacilityController.
 userRouter.post('/health-facilities', healthFacilityController.store);
 userRouter.patch('/health-facilities/:healthFacilityId', healthFacilityController.update);
 userRouter.delete('/health-facilities/:healthFacilityId', healthFacilityController.destroy);
+userRouter.post('/health-facilities/:healthFacilityId/medical-collaboration', healthFacilityController.addMedicalFacility);
+
+userRouter.get('/medical-facilities', medicalFacilityController.get);
+userRouter.get('/medical-facilities/:medicalFacilityId', medicalFacilityController.show);
+userRouter.post('/medical-facilities', medicalFacilityController.store);
+userRouter.patch('/medical-facilities/:medicalFacilityId', medicalFacilityController.update);
+userRouter.delete('/medical-facilities/:medicalFacilityId', medicalFacilityController.destroy);
 
 export default userRouter;
