@@ -26,7 +26,7 @@ jobs:
         port: 22
         script: |
           cd /var/www/cervicare.com
-          git pull origin development
+          git pull origin production
           git status
           npm install --only=prod
           pm2 restart cervicare
