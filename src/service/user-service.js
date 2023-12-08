@@ -41,7 +41,7 @@ const store = async (request) => {
     throw new ResponseError(409, 'User Already Exists');
   }
 
-  const [roleUser] = await connection.execute('SELECT * FROM roles WHERE name = "user" LIMIT 1');
+  const [roleUser] = await connection.execute('SELECT * FROM roles WHERE name = ? LIMIT 1', ['user']);
 
   createRequest.id = crypto.randomUUID();
   createRequest.roleId = roleUser[0].id;
