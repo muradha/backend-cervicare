@@ -16,6 +16,9 @@ const web = express();
 web.use(express.json()); // Used to parse JSON bodies
 web.use(limiter);
 
+web.get('/', (req, res) => {
+  res.send('HELLO WORLD');
+});
 web.use('/api', authRouter);
 web.use('/api', accessValidation, userRouter);
 web.use(errorMiddleware);
