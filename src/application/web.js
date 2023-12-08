@@ -1,6 +1,7 @@
 import express from 'express';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import rateLimit from 'express-rate-limit';
+import cors from 'cors';
 import userRouter from '../route/api.js';
 import authRouter from '../route/public-api.js';
 import { errorMiddleware } from '../middleware/error-middleware.js';
@@ -13,8 +14,9 @@ const limiter = rateLimit({
 
 const web = express();
 
-web.use(express.json()); // Used to parse JSON bodies
+web.use(cors());
 web.use(limiter);
+web.use(express.json()); // Used to parse JSON bodies
 
 web.get('/', (req, res) => {
   res.send('HELLO WORLD');

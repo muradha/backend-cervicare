@@ -19,12 +19,13 @@ const register = async (request) => {
     user.password = await bcrypt.hash(user.password, 10);
   }
 
-  const userCreated = await connection.execute('INSERT INTO users (id,name,email,password,role_id) VALUES (?, ?, ?, ?, ?)', [
+  const userCreated = await connection.execute('INSERT INTO users (id,name,email,password,role_id,updated_at) VALUES (?, ?, ?, ?, ?, ?)', [
     crypto.randomUUID(),
     user.name,
     user.email,
     user.password,
     user.roleId,
+    new Date(),
   ]);
 
   return userCreated;
