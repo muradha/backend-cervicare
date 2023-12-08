@@ -20,6 +20,7 @@ jobs:
     - name: Deploy using ssh
       uses: appleboy/ssh-action@master
       with:
+        timeout: 10m
         debug: true
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
