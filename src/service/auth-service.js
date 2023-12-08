@@ -12,15 +12,14 @@ const register = async (request) => {
     throw new ResponseError(409, 'User Already Exists');
   }
 
-  const [userRole] = await connection.execute('SELECT * FROM roles WHERE name = user');
-
+  const [userRole] = await connection.execute('SELECT * FROM roles WHERE name = ?', ['user']);
   user.roleId = userRole[0].id;
 
   if (user.password) {
     user.password = await bcrypt.hash(user.password, 10);
   }
 
-  const userCreated = await connection.execute('INSERT INTO users (id,name,email,password,role_id) VALUES (?, ?, ?, ?)', [
+  const userCreated = await connection.execute('INSERT INTO users (id,name,email,password,role_id) VALUES (?, ?, ?, ?, ?)', [
     crypto.randomUUID(),
     user.name,
     user.email,
