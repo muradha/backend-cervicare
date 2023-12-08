@@ -3,6 +3,8 @@ import userController from '../controller/user-controller.js';
 import articleController from '../controller/article-controller.js';
 import healthFacilityController from '../controller/healthFacility-controller.js';
 import medicalFacilityController from '../controller/medicalFacility-controller.js';
+import publicFacilityController from '../controller/publicFacility-controller.js';
+// import uploadFile from '../utils/uploadFile.js';
 
 const userRouter = new express.Router();
 
@@ -23,12 +25,18 @@ userRouter.get('/health-facilities/:healthFacilityId', healthFacilityController.
 userRouter.post('/health-facilities', healthFacilityController.store);
 userRouter.patch('/health-facilities/:healthFacilityId', healthFacilityController.update);
 userRouter.delete('/health-facilities/:healthFacilityId', healthFacilityController.destroy);
-userRouter.post('/health-facilities/:healthFacilityId/medical-collaboration', healthFacilityController.addMedicalFacility);
+// userRouter.post('/health-facilities/:healthFacilityId/medical-collaboration', healthFacilityController.addMedicalFacility);
 
 userRouter.get('/medical-facilities', medicalFacilityController.get);
 userRouter.get('/medical-facilities/:medicalFacilityId', medicalFacilityController.show);
 userRouter.post('/medical-facilities', medicalFacilityController.store);
 userRouter.patch('/medical-facilities/:medicalFacilityId', medicalFacilityController.update);
 userRouter.delete('/medical-facilities/:medicalFacilityId', medicalFacilityController.destroy);
+
+userRouter.get('/public-facilities', publicFacilityController.get);
+userRouter.get('/public-facilities/:publicFacilityId', publicFacilityController.show);
+userRouter.post('/public-facilities', publicFacilityController.store);
+userRouter.patch('/public-facilities/:publicFacilityId', publicFacilityController.update);
+userRouter.delete('/public-facilities/:publicFacilityId', publicFacilityController.destroy);
 
 export default userRouter;

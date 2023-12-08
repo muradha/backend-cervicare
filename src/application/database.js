@@ -1,18 +1,21 @@
-import { PrismaClient } from '@prisma/client';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import mysql from 'mysql2/promise';
 
-export const prismaClient = new PrismaClient();
+// eslint-disable-next-line import/no-extraneous-dependencies
+import dotenv from 'dotenv';
 
-async function main() {
-  await prismaClient.$connect();
-  console.log('Database connected');
-}
+dotenv.config();
 
-main()
-  .then(async () => {
-    await prismaClient.$disconnect();
-  })
-  .catch(async (e) => {
-    console.error(e);
-    await prismaClient.$disconnect();
-    process.exit(1);
-  });
+const dbUsername = process.env.DATABASE_USERNAME;
+const dbHost = process.env.DATABASE_HOST;
+const dbName = process.env.DATABASE_NAME;
+const dbPort = process.env.DATABASE_PORT;
+
+const connection = await mysql.createConnection({
+  host: dbHost,
+  user: dbUsername,
+  database: dbName,
+  port: dbPort,
+});
+
+export default connection;

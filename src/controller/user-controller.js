@@ -25,9 +25,9 @@ const show = async (req, res, next) => {
 
 const store = async (req, res, next) => {
   try {
-    const result = await userService.store(req.body);
-
+    const result = await userService.store(req);
     res.status(201).json({
+      message: 'User created successfully',
       data: result,
     });
   } catch (error) {
