@@ -15,6 +15,7 @@ const connection = await mysql.createConnection({
   host: dbHost,
   user: dbUsername,
   database: dbName,
+  password: process.env.DATABASE_PASSWORD,
   port: dbPort,
 });
 
