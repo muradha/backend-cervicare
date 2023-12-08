@@ -15,10 +15,9 @@ const register = async (req, res, next) => {
 const login = async (req, res, next) => {
   try {
     const result = await authService.login(req.body);
-
     const payload = {
-      id: result.id,
-      email: result.email,
+      id: result[0].id,
+      email: result[0].email,
     };
 
     const secret = process.env.JWT_SECRET;
