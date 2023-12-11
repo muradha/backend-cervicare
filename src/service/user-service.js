@@ -5,14 +5,17 @@ import validate from '../validation/validation.js';
 import connection from '../application/database.js';
 import ResponseError from '../error/response-error.js';
 import { storeUserValidation, updateUserValidation } from '../validation/user-validation.js';
-import uploadFile from '../utils/uploadFile.js';
 
 const removeImage = (fileName) => {
   const dirname = path.resolve(path.dirname(''));
   const directoryPath = `${dirname}/${fileName}`;
 
-  fs.unlink(directoryPath, (err) => {
-    if (err) throw err;
+  fs.stat(directoryPath, (exists) => {
+    if (exists) {
+      fs.unlink(directoryPath, (err) => {
+        if (err) throw err;
+      });
+    }
   });
 };
 
@@ -33,11 +36,14 @@ const show = async (userId) => {
 };
 
 const store = async (request) => {
+  if (!request.file) throw new ResponseError(400, 'Image is required');
+
   const createRequest = validate(storeUserValidation, request.body);
 
-  const [existingUser] = await connection.execute('SELECT COUNT(*) AS count FROM users WHERE email = ?', [createRequest.email]);
+  const [existingUser] = await connection.execute('SELECT * FROM users WHERE email = ? LIMIT 1', [createRequest.email]);
 
-  if (existingUser[0].count > 0) {
+  if (existingUser.length > 0) {
+    if (request.file) removeImage(request.file.path);
     throw new ResponseError(409, 'User Already Exists');
   }
 
@@ -49,6 +55,9 @@ const store = async (request) => {
   if (createRequest.password) {
     createRequest.password = await bcrypt.hash(createRequest.password, 10);
   }
+
+  createRequest.profile_picture = request.file.path;
+
   const user = await connection.execute(
     'INSERT INTO users (id,name,email,password,profile_picture,birth_date,gender,phone,role_id,updated_at) VALUES (?,?,?,?,?,?,?,?,?,?)',
     [
@@ -69,13 +78,14 @@ const store = async (request) => {
 };
 
 const destroy = async (userId) => {
-  const [existingUser] = await connection.execute('SELECT COUNT(*) AS count FROM users WHERE id = ?', [userId]);
+  const [existingUser] = await connection.execute('SELECT * FROM users WHERE id = ? LIMIT 1', [userId]);
 
-  if (existingUser === 0) {
+  if (existingUser.length === 0) {
     throw new ResponseError(404, 'User Not Found');
   }
 
-  // removeImage(userCount.profile_picture);
+  if (existingUser[0].profile_picture) removeImage(existingUser[0].profile_picture);
+
   const [deleteUser] = await connection.execute('DELETE FROM users WHERE id = ?', [userId]);
 
   return deleteUser;
@@ -86,15 +96,17 @@ const update = async (request, userId) => {
 
   const [existingUser] = await connection.execute('SELECT * FROM users WHERE id = ? LIMIT 1', [userId]);
 
-  if (!existingUser) {
-    throw new ResponseError(409, 'User Not Found');
+  if (existingUser.length === 0) throw new ResponseError(409, 'User Not Found');
+
+  if (request.file) {
+    data.profile_picture = request.file.path;
+    removeImage(existingUser[0].profile_picture);
+  } else {
+    data.profile_picture = existingUser[0].profile_picture;
   }
 
-  if (data.password) {
-    data.password = await bcrypt.hash(data.password, 10);
-  } else {
-    data.password = existingUser[0].password;
-  }
+  data.password = await bcrypt.hash(data.password, 10) ?? existingUser[0].password;
+
   const query = `
     UPDATE users
     SET

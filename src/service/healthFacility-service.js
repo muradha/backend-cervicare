@@ -22,28 +22,6 @@ const formatHealthFacility = (healthFacility) => {
   return data;
 };
 
-const getLocationData = (data) => {
-  const {
-    province,
-    city,
-    regency,
-    district,
-    urbanVillage,
-    rural,
-    address,
-  } = data;
-
-  return {
-    province,
-    city,
-    regency,
-    district,
-    urbanVillage,
-    rural,
-    address,
-  };
-};
-
 const get = async () => {
   const [healthFacility] = await connection.execute('SELECT * FROM health_facilities LIMIT 1000');
 
@@ -51,15 +29,29 @@ const get = async () => {
 };
 
 const show = async (healthFacilityId) => {
-  const [healthFacilityExist] = await connection.execute('SELET COUNT(*) AS count FROM health_facilities WHERE id = ?', [healthFacilityId]);
+  const [healthFacilityExist] = await connection.execute('SELECT COUNT(*) AS count FROM health_facilities WHERE id = ?', [healthFacilityId]);
 
   if (healthFacilityExist[0].count === 0) {
     throw new ResponseError(404, 'Health Facility Not Found');
   }
 
-  const [healthFacility] = await connection.execute('SELECT * FROM health_facilities WHERE id = ?', [
-    healthFacilityId,
-  ]);
+  const [healthFacility] = await connection.execute(
+    `SELECT health_facilities.*, facility_location.* 
+    FROM health_facilities LEFT JOIN facility_location 
+    ON health_facilities.id = facility_location.health_facility_id 
+    WHERE health_facilities.id = ?`,
+    [healthFacilityId],
+  );
+
+  const [publicFacilities] = await connection.execute(
+    `SELECT public_facilities.name
+    FROM public_facilities
+    JOIN facility_link ON facility_link.public_facility_id = public_facilities.id
+    WHERE facility_link.health_facility_id = ?`,
+    [healthFacilityId],
+  );
+
+  healthFacility[0].publicFacilities = publicFacilities.map((row) => row.name);
 
   return formatHealthFacility(healthFacility);
 };
@@ -129,22 +121,10 @@ const destroy = async (healthFacilityId) => {
   return healthFacility;
 };
 
-const addMedicalFacility = async (healthFacilityId, medicalFacilityId) => {
-  const data = await prismaClient.medicalCollaboration.create({
-    data: {
-      healthFacilityId,
-      medicalFacilityId,
-    },
-  });
-
-  return data;
-};
-
 export default {
   get,
   store,
   update,
   show,
   destroy,
-  addMedicalFacility,
 };
