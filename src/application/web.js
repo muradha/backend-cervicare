@@ -16,6 +16,7 @@ const web = express();
 
 web.use(cors());
 web.use(limiter);
+web.use(express.static('public'));
 web.use(express.json()); // Used to parse JSON bodies
 
 web.get('/', (req, res) => {
