@@ -4,13 +4,13 @@ import articleController from '../controller/article-controller.js';
 import healthFacilityController from '../controller/healthFacility-controller.js';
 import medicalFacilityController from '../controller/medicalFacility-controller.js';
 import publicFacilityController from '../controller/publicFacility-controller.js';
-// import uploadFile from '../utils/uploadFile.js';
+import uploadFile from '../utils/uploadFile.js';
 
 const userRouter = new express.Router();
 
 userRouter.get('/users', userController.index);
 userRouter.get('/users/:userId', userController.show);
-userRouter.post('/users', userController.store);
+userRouter.post('/users', uploadFile('profile_picture', 'profile_picture'), userController.store);
 userRouter.delete('/users/:userId', userController.destroy);
 userRouter.patch('/users/:userId', userController.update);
 
