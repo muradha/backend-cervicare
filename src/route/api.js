@@ -7,6 +7,7 @@ import publicFacilityController from '../controller/publicFacility-controller.js
 import uploadFile from '../utils/uploadFile.js';
 import doctorController from '../controller/doctor-controller.js';
 import doctorRatingController from '../controller/doctorRating-controller.js';
+import authController from '../controller/auth-controller.js';
 
 const userRouter = new express.Router();
 
@@ -44,7 +45,12 @@ userRouter.delete('/public-facilities/:publicFacilityId', publicFacilityControll
 userRouter.get('/doctors', doctorController.get);
 userRouter.post('/doctors', doctorController.store);
 userRouter.get('/doctors/:doctorId', doctorController.show);
+userRouter.delete('/doctors/:doctorId', doctorController.destroy);
+userRouter.patch('/doctors/:doctorId', doctorController.update);
 
 userRouter.post('/doctor-ratings', doctorRatingController.store);
+
+userRouter.post('/generate-otp/whatsapp', authController.generateOtpWhatsapp);
+userRouter.post('/verify-otp/whatsapp', authController.verifyOtpWhatsapp);
 
 export default userRouter;

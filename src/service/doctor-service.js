@@ -1,6 +1,6 @@
 import connection from '../application/database.js';
 import ResponseError from '../error/response-error.js';
-import { storeDoctorValidation } from '../validation/doctor-validation.js';
+import { storeDoctorValidation, updateDoctorValidation } from '../validation/doctor-validation.js';
 import validate from '../validation/validation.js';
 
 const get = async () => {
@@ -27,7 +27,7 @@ const store = async (request) => {
 
   const [uniqueDoctor] = await connection.execute('SELECT * FROM doctors WHERE user_id = ? LIMIT 1', [data.user_id]);
 
-  if (uniqueDoctor.length > 0) throw new ResponseError(404, 'Doctor Already Exist');
+  if (uniqueDoctor.length > 0) throw new ResponseError(409, 'Doctor Already Exist');
 
   const [doctor] = await connection.execute('INSERT INTO doctors (id, registration_certificate, work_lifetime, practice_location, alumnus, user_id) VALUES (?, ?, ?, ?, ?, ?)', [
     crypto.randomUUID(),
@@ -41,8 +41,37 @@ const store = async (request) => {
   return doctor;
 };
 
+const destroy = async (doctorId) => {
+  const [uniqueDoctor] = await connection.execute('SELECT * FROM doctors WHERE id = ? LIMIT 1', [doctorId]);
+
+  if (uniqueDoctor.length === 0) throw new ResponseError(404, 'Doctor Not Found');
+
+  const [result] = await connection.execute('DELETE FROM doctors WHERE id = ?', [doctorId]);
+
+  return result;
+};
+
+const update = async (request, doctorId) => {
+  const data = validate(updateDoctorValidation, request);
+  const [uniqueDoctor] = await connection.execute('SELECT * FROM doctors WHERE id = ? LIMIT 1', [doctorId]);
+
+  if (uniqueDoctor.length === 0) throw new ResponseError(404, 'Doctor Not Found');
+
+  const [result] = await connection.execute('UPDATE doctors SET registration_certificate = ?, work_lifetime = ?, practice_location = ?, alumnus = ? WHERE id = ?', [
+    data.registration_certificate,
+    data.work_lifetime,
+    data.practice_location,
+    data.alumnus,
+    doctorId,
+  ]);
+
+  return result;
+};
+
 export default {
   get,
   show,
   store,
+  destroy,
+  update,
 };

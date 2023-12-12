@@ -8,7 +8,8 @@
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
-    "mysql2": "^3.6.5"
+    "mysql2": "^3.6.5",
+    "superagent": "^8.1.2"
   },
   "name": "be-cervicare",
   "version": "1.0.0",

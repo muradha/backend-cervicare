@@ -1,8 +1,14 @@
 import bcrypt from 'bcrypt';
+import superagent from 'superagent';
+import dotenv from 'dotenv';
 import ResponseError from '../error/response-error.js';
 import { loginUserValidation, registerUserValidation } from '../validation/user-validation.js';
 import validate from '../validation/validation.js';
 import connection from '../application/database.js';
+import Joi from 'joi';
+import Twilio from 'twilio';
+
+dotenv.config();
 
 const register = async (request) => {
   const user = await validate(registerUserValidation, request);
@@ -49,7 +55,70 @@ const login = async (request) => {
   return userFound;
 };
 
+const generateOtpWhatsapp = async (request) => {
+  const data = validate(Joi.object({
+    phone_number: Joi.string().min(10).required(),
+  }), request.body);
+
+  const userId = request.userData.id;
+  const [existingUser] = await connection.execute('SELECT * FROM users WHERE id = ? LIMIT 1', [userId]);
+
+  if (existingUser.length === 0) throw new ResponseError(404, 'User Not Found');
+
+  const apiUrl = process.env.FONNTE_API_URL;
+  const apiKey = process.env.FONNTE_API_KEY;
+
+  const existWhatsapp = await superagent.post(`${apiUrl}/validate`).set('Authorization', apiKey).send({
+    target: data.phone_number,
+  });
+
+  if (existWhatsapp.body.not_registered.length > 0) {
+    throw new ResponseError(400, 'Whatsapp Number Not Registered');
+  }
+
+  const randomOtp = Math.floor(100000 + Math.random() * 900000);
+  const sendOtp = await superagent.post(`${apiUrl}/send`).set('Authorization', apiKey).send({
+    target: data.phone_number,
+    message: `Your OTP is ${randomOtp}`,
+  });
+  const result = sendOtp.body;
+
+  const expiryTime = Date.now() + (1000 * 60); // 1 minutes
+
+  const otp = await connection.execute('INSERT INTO user_otp (id, otp, expiry_time, user_id) VALUES (?,?,?,?)', [crypto.randomUUID(), randomOtp, expiryTime, userId]);
+
+  return result;
+};
+
+const verifyOtpWhatsapp = async (data) => {
+  const { body: { otp_code: otpCode }, userData: { id: userId } } = data;
+
+  const [existingOtp] = await connection.execute(
+    'SELECT * FROM user_otp WHERE otp = ? AND user_id = ? AND is_verified = "NO" LIMIT 1',
+    [otpCode, userId],
+  );
+
+  if (existingOtp.length === 0) {
+    throw new ResponseError(401, 'Invalid OTP');
+  }
+
+  const currentTime = Date.now();
+
+  if (currentTime > existingOtp[0].expiry_time) {
+    throw new ResponseError(401, 'OTP Expired');
+  }
+
+  const [updateOtp] = await connection.execute(
+    'UPDATE user_otp SET is_verified = "YES", updated_at = ? WHERE id = ?',
+    [new Date(), existingOtp[0].id],
+  );
+
+  return updateOtp;
+};
+
 export default {
   register,
   login,
+  generateOtpWhatsapp,
+  verifyOtpWhatsapp,
 };

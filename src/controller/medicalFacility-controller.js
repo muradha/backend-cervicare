@@ -5,6 +5,7 @@ const get = async (req, res, next) => {
     const result = await medicalFacilityService.get();
 
     res.status(200).json({
+      message: 'Medical Facility fetched successfully',
       data: result,
     });
   } catch (error) {
@@ -18,6 +19,7 @@ const show = async (req, res, next) => {
     const result = await medicalFacilityService.show(medicalFacilityId);
 
     res.status(200).json({
+      message: 'Medical Facility fetched successfully',
       data: result,
     });
   } catch (error) {

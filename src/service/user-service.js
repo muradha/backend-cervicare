@@ -137,12 +137,8 @@ const update = async (request, userId) => {
     userId,
   ];
 
-  try {
-    const [user] = await connection.execute(query, values);
-    return user;
-  } catch (error) {
-    throw new ResponseError(500, 'Something went wrong');
-  }
+  const [user] = await connection.execute(query, values);
+  return user;
 };
 
 export default {

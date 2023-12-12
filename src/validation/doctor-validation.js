@@ -8,6 +8,14 @@ const storeDoctorValidation = Joi.object({
   practice_location: Joi.string().required(),
 });
 
+const updateDoctorValidation = Joi.object({
+  registration_certificate: Joi.string().required(),
+  work_lifetime: Joi.number().required(),
+  alumnus: Joi.string().required(),
+  practice_location: Joi.string().required(),
+});
+
 export {
   storeDoctorValidation,
+  updateDoctorValidation,
 };

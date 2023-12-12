@@ -14,6 +14,7 @@ const limiter = rateLimit({
 
 const web = express();
 
+web.disable('x-powered-by');
 web.use(cors());
 web.use(limiter);
 web.use(express.static('public'));
