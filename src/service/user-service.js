@@ -47,10 +47,10 @@ const store = async (request) => {
     throw new ResponseError(409, 'User Already Exists');
   }
 
-  const [roleUser] = await connection.execute('SELECT * FROM roles WHERE name = ? LIMIT 1', ['user']);
+  const [role] = await connection.execute('SELECT * FROM roles WHERE name = ? LIMIT 1', ['user']);
 
   createRequest.id = crypto.randomUUID();
-  createRequest.roleId = roleUser[0].id;
+  createRequest.roleId = role[0].id;
 
   if (createRequest.password) {
     createRequest.password = await bcrypt.hash(createRequest.password, 10);
@@ -75,6 +75,10 @@ const store = async (request) => {
   ).then((data) => data).catch(() => {
     throw new ResponseError(500, 'Something went wrong');
   });
+
+  const userRole = await connection.execute('INSERT INTO role_users(role_id, user_id) VALUES(?, ?)', [createRequest.roleId, createRequest.id]);
+
+  return user;
 };
 
 const destroy = async (userId) => {

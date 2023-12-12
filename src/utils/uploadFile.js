@@ -41,5 +41,4 @@ const uploadFile = (inputFieldName, pathName = '') => {
   }
 };
 
-
 export default uploadFile;

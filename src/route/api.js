@@ -5,6 +5,8 @@ import healthFacilityController from '../controller/healthFacility-controller.js
 import medicalFacilityController from '../controller/medicalFacility-controller.js';
 import publicFacilityController from '../controller/publicFacility-controller.js';
 import uploadFile from '../utils/uploadFile.js';
+import doctorController from '../controller/doctor-controller.js';
+import doctorRatingController from '../controller/doctorRating-controller.js';
 
 const userRouter = new express.Router();
 
@@ -38,5 +40,11 @@ userRouter.get('/public-facilities/:publicFacilityId', publicFacilityController.
 userRouter.post('/public-facilities', publicFacilityController.store);
 userRouter.patch('/public-facilities/:publicFacilityId', publicFacilityController.update);
 userRouter.delete('/public-facilities/:publicFacilityId', publicFacilityController.destroy);
+
+userRouter.get('/doctors', doctorController.get);
+userRouter.post('/doctors', doctorController.store);
+userRouter.get('/doctors/:doctorId', doctorController.show);
+
+userRouter.post('/doctor-ratings', doctorRatingController.store);
 
 export default userRouter;

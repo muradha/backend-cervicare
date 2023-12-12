@@ -10,10 +10,10 @@ const index = async (req, res) => {
 
 const store = async (req, res, next) => {
   try {
-    const result = await articleService.store(req.body, req.userData);
+    await articleService.store(req.body, req.userData);
 
     res.status(201).json({
-      data: result,
+      message: 'Article created successfully',
     });
   } catch (error) {
     next(error);
@@ -23,10 +23,10 @@ const store = async (req, res, next) => {
 const destroy = async (req, res, next) => {
   try {
     const { articleId } = req.params;
-    const result = await articleService.destroy(articleId);
+    await articleService.destroy(articleId);
 
     res.status(200).json({
-      data: result,
+      message: 'Article deleted successfully',
     });
   } catch (error) {
     next(error);
@@ -49,10 +49,10 @@ const show = async (req, res, next) => {
 const update = async (req, res, next) => {
   try {
     const { articleId } = req.params;
-    const result = await articleService.update(req.body, articleId);
+    await articleService.update(req.body, articleId);
 
     res.status(201).json({
-      data: result,
+      message: 'Article updated successfully',
     });
   } catch (error) {
     next(error);
