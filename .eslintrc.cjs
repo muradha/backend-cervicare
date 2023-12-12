@@ -23,6 +23,8 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    'import/extensions': ['error', 'always', {ignorePackages: true} ]
+    'no-extend-native': 'off',
+    'linebreak-style': ['error', 'windows'],
+    'import/extensions': ['error', 'always', { ignorePackages: true }],
   },
 };
