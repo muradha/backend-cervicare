@@ -6,7 +6,6 @@ import { loginUserValidation, registerUserValidation } from '../validation/user-
 import validate from '../validation/validation.js';
 import connection from '../application/database.js';
 import Joi from 'joi';
-import Twilio from 'twilio';
 
 dotenv.config();
 
