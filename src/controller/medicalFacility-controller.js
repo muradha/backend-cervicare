@@ -5,6 +5,7 @@ const get = async (req, res, next) => {
     const result = await medicalFacilityService.get();
 
     res.status(200).json({
+      message: 'Medical Facility fetched successfully',
       data: result,
     });
   } catch (error) {
@@ -18,6 +19,7 @@ const show = async (req, res, next) => {
     const result = await medicalFacilityService.show(medicalFacilityId);
 
     res.status(200).json({
+      message: 'Medical Facility fetched successfully',
       data: result,
     });
   } catch (error) {
@@ -27,10 +29,10 @@ const show = async (req, res, next) => {
 
 const store = async (req, res, next) => {
   try {
-    const result = await medicalFacilityService.store(req.body);
+    await medicalFacilityService.store(req.body);
 
     res.status(201).json({
-      data: result,
+      message: 'Medical Facility created successfully',
     });
   } catch (error) {
     next(error);
@@ -41,10 +43,10 @@ const update = async (req, res, next) => {
   try {
     const { medicalFacilityId } = req.params;
 
-    const result = await medicalFacilityService.update(req.body, medicalFacilityId);
+    await medicalFacilityService.update(req.body, medicalFacilityId);
 
     res.status(201).json({
-      data: result,
+      message: 'Medical Facility updated successfully',
     });
   } catch (error) {
     next(error);
@@ -54,10 +56,10 @@ const update = async (req, res, next) => {
 const destroy = async (req, res, next) => {
   try {
     const { medicalFacilityId } = req.params;
-    const result = await medicalFacilityService.destroy(medicalFacilityId);
+    await medicalFacilityService.destroy(medicalFacilityId);
 
     res.status(200).json({
-      data: result,
+      messsage: 'Medical Facility deleted successfully',
     });
   } catch (error) {
     next(error);

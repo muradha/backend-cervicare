@@ -27,10 +27,10 @@ const show = async (req, res, next) => {
 
 const store = async (req, res, next) => {
   try {
-    const result = await healthFacilityService.store(req.body);
+    await healthFacilityService.store(req.body);
 
     res.status(201).json({
-      data: result,
+      message: 'Health Facility created successfully',
     });
   } catch (error) {
     next(error);
@@ -40,10 +40,10 @@ const store = async (req, res, next) => {
 const update = async (req, res, next) => {
   try {
     const { healthFacilityId } = req.params;
-    const result = await healthFacilityService.update(req.body, healthFacilityId);
+    await healthFacilityService.update(req.body, healthFacilityId);
 
     res.status(200).json({
-      data: result,
+      message: 'Health Facility updated successfully',
     });
   } catch (error) {
     next(error);
@@ -53,10 +53,10 @@ const update = async (req, res, next) => {
 const destroy = async (req, res, next) => {
   try {
     const { healthFacilityId } = req.params;
-    const result = await healthFacilityService.destroy(healthFacilityId);
+    await healthFacilityService.destroy(healthFacilityId);
 
     res.status(200).json({
-      data: result,
+      message: 'Health Facility deleted successfully',
     });
   } catch (error) {
     next(error);

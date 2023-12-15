@@ -3,9 +3,9 @@ import authService from '../service/auth-service.js';
 
 const register = async (req, res, next) => {
   try {
-    const result = await authService.register(req.body);
+    await authService.register(req.body);
     res.status(201).json({
-      data: result,
+      message: 'User registered successfully',
     });
   } catch (error) {
     next(error);
@@ -34,7 +34,33 @@ const login = async (req, res, next) => {
   }
 };
 
+const generateOtpWhatsapp = async (req, res, next) => {
+  try {
+    const result = await authService.generateOtpWhatsapp(req);
+
+    res.status(200).json({
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const verifyOtpWhatsapp = async (req, res, next) => {
+  try {
+    const result = await authService.verifyOtp(req);
+
+    res.status(200).json({
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   register,
   login,
+  generateOtpWhatsapp,
+  verifyOtpWhatsapp,
 };

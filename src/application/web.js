@@ -4,7 +4,7 @@ import rateLimit from 'express-rate-limit';
 import cors from 'cors';
 import userRouter from '../route/api.js';
 import authRouter from '../route/public-api.js';
-import { errorMiddleware } from '../middleware/error-middleware.js';
+import errorMiddleware from '../middleware/error-middleware.js';
 import accessValidation from '../middleware/auth-middleware.js';
 
 const limiter = rateLimit({
@@ -14,6 +14,7 @@ const limiter = rateLimit({
 
 const web = express();
 
+web.disable('x-powered-by');
 web.use(cors());
 web.use(limiter);
 web.use(express.static('public'));

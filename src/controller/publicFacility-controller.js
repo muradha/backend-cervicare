@@ -27,10 +27,10 @@ const show = async (req, res, next) => {
 
 const store = async (req, res, next) => {
   try {
-    const result = await publicFacilityService.store(req.body);
+    await publicFacilityService.store(req.body);
 
     res.status(201).json({
-      data: result,
+      messsage: 'Public Facility created successfully',
     });
   } catch (error) {
     next(error);
@@ -44,7 +44,7 @@ const update = async (req, res, next) => {
     const result = await publicFacilityService.update(req.body, publicFacilityId);
 
     res.status(201).json({
-      data: result,
+      messsage: 'Public Facility updated successfully',
     });
   } catch (error) {
     next(error);
@@ -57,7 +57,7 @@ const destroy = async (req, res, next) => {
     const result = await publicFacilityService.destroy(publicFacilityId);
 
     res.status(200).json({
-      data: result,
+      messsage: 'Public Facility deleted successfully',
     });
   } catch (error) {
     next(error);

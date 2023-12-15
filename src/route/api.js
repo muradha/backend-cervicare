@@ -5,6 +5,9 @@ import healthFacilityController from '../controller/healthFacility-controller.js
 import medicalFacilityController from '../controller/medicalFacility-controller.js';
 import publicFacilityController from '../controller/publicFacility-controller.js';
 import uploadFile from '../utils/uploadFile.js';
+import doctorController from '../controller/doctor-controller.js';
+import doctorRatingController from '../controller/doctorRating-controller.js';
+import authController from '../controller/auth-controller.js';
 
 const userRouter = new express.Router();
 
@@ -14,13 +17,10 @@ userRouter.post('/users', uploadFile('profile_picture', 'profile_picture'), user
 userRouter.delete('/users/:userId', userController.destroy);
 userRouter.patch('/users/:userId', userController.update);
 
-userRouter.get('/articles', articleController.index);
-userRouter.get('/articles/:articleId', articleController.show);
 userRouter.post('/articles', articleController.store);
 userRouter.delete('/articles/:articleId', articleController.destroy);
 userRouter.patch('/articles/:articleId', articleController.update);
 
-userRouter.get('/health-facilities', healthFacilityController.get);
 userRouter.get('/health-facilities/:healthFacilityId', healthFacilityController.show);
 userRouter.post('/health-facilities', healthFacilityController.store);
 userRouter.patch('/health-facilities/:healthFacilityId', healthFacilityController.update);
@@ -38,5 +38,15 @@ userRouter.get('/public-facilities/:publicFacilityId', publicFacilityController.
 userRouter.post('/public-facilities', publicFacilityController.store);
 userRouter.patch('/public-facilities/:publicFacilityId', publicFacilityController.update);
 userRouter.delete('/public-facilities/:publicFacilityId', publicFacilityController.destroy);
+
+userRouter.post('/doctors', doctorController.store);
+userRouter.get('/doctors/:doctorId', doctorController.show);
+userRouter.delete('/doctors/:doctorId', doctorController.destroy);
+userRouter.patch('/doctors/:doctorId', doctorController.update);
+
+userRouter.post('/doctor-ratings', doctorRatingController.store);
+
+userRouter.post('/generate-otp/whatsapp', authController.generateOtpWhatsapp);
+userRouter.post('/verify-otp/whatsapp', authController.verifyOtpWhatsapp);
 
 export default userRouter;

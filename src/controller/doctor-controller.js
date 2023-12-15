@@ -1,10 +1,10 @@
-import userService from '../service/user-service.js';
+import doctorService from '../service/doctor-service.js';
 
-const index = async (req, res, next) => {
+const get = async (req, res, next) => {
   try {
-    const result = await userService.index();
+    const result = await doctorService.get();
+
     res.status(200).json({
-      message: 'Users retrieved successfully',
       data: result,
     });
   } catch (error) {
@@ -14,10 +14,10 @@ const index = async (req, res, next) => {
 
 const show = async (req, res, next) => {
   try {
-    const { userId } = req.params;
-    const result = await userService.show(userId);
+    const { doctorId } = req.params;
+    const result = await doctorService.show(doctorId);
+
     res.status(200).json({
-      message: 'User retrieved successfully',
       data: result,
     });
   } catch (error) {
@@ -27,9 +27,10 @@ const show = async (req, res, next) => {
 
 const store = async (req, res, next) => {
   try {
-    await userService.store(req);
+    await doctorService.store(req.body);
+
     res.status(201).json({
-      message: 'User created successfully',
+      message: 'Doctor created successfully',
     });
   } catch (error) {
     next(error);
@@ -38,11 +39,11 @@ const store = async (req, res, next) => {
 
 const destroy = async (req, res, next) => {
   try {
-    const { userId } = req.params;
-    await userService.destroy(userId);
+    const { doctorId } = req.params;
+    await doctorService.destroy(doctorId);
 
     res.status(200).json({
-      message: 'User deleted successfully',
+      message: 'Doctor deleted successfully',
     });
   } catch (error) {
     next(error);
@@ -51,11 +52,11 @@ const destroy = async (req, res, next) => {
 
 const update = async (req, res, next) => {
   try {
-    const { userId } = req.params;
+    const { doctorId } = req.params;
+    await doctorService.update(req.body, doctorId);
 
-    await userService.update(req.body, userId);
     res.status(200).json({
-      message: 'User updated successfully',
+      message: 'Doctor updated successfully',
     });
   } catch (error) {
     next(error);
@@ -63,7 +64,7 @@ const update = async (req, res, next) => {
 };
 
 export default {
-  index,
+  get,
   show,
   store,
   destroy,

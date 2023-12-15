@@ -8,7 +8,7 @@ const imageFilter = async (req, file, cb) => {
   if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) { // allowed file extensions
     return cb(new Error('please upload png,jpeg or jpg'));
   }
-  cb(null, true);
+  return cb(null, true);
 };
 
 const uploadFile = (inputFieldName, pathName = '') => {
@@ -40,6 +40,5 @@ const uploadFile = (inputFieldName, pathName = '') => {
     throw new ResponseError(500, error.message);
   }
 };
-
 
 export default uploadFile;

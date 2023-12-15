@@ -1,9 +1,18 @@
 import express from 'express';
 import authController from '../controller/auth-controller.js';
+import articleController from '../controller/article-controller.js';
+import healthFacilityController from '../controller/healthFacility-controller.js';
+import doctorController from '../controller/doctor-controller.js';
 
-const authRouter = new express.Router();
+const publicRouter = new express.Router();
 
-authRouter.post('/register', authController.register);
-authRouter.post('/login', authController.login);
+publicRouter.post('/register', authController.register);
+publicRouter.post('/login', authController.login);
 
-export default authRouter;
+publicRouter.get('/articles', articleController.index);
+publicRouter.get('/articles/:articleId', articleController.show);
+
+publicRouter.get('/doctors', doctorController.get);
+publicRouter.get('/health-facilities', healthFacilityController.get);
+
+export default publicRouter;
