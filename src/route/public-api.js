@@ -13,6 +13,9 @@ publicRouter.get('/articles', articleController.index);
 publicRouter.get('/articles/:articleId', articleController.show);
 
 publicRouter.get('/doctors', doctorController.get);
+publicRouter.get('/doctors/:doctorId', doctorController.show);
+
 publicRouter.get('/health-facilities', healthFacilityController.get);
+publicRouter.get('/health-facilities/:healthFacilityId', healthFacilityController.show);
 
 export default publicRouter;
