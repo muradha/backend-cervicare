@@ -17,13 +17,10 @@ userRouter.post('/users', uploadFile('profile_picture', 'profile_picture'), user
 userRouter.delete('/users/:userId', userController.destroy);
 userRouter.patch('/users/:userId', userController.update);
 
-userRouter.get('/articles', articleController.index);
-userRouter.get('/articles/:articleId', articleController.show);
 userRouter.post('/articles', articleController.store);
 userRouter.delete('/articles/:articleId', articleController.destroy);
 userRouter.patch('/articles/:articleId', articleController.update);
 
-userRouter.get('/health-facilities', healthFacilityController.get);
 userRouter.get('/health-facilities/:healthFacilityId', healthFacilityController.show);
 userRouter.post('/health-facilities', healthFacilityController.store);
 userRouter.patch('/health-facilities/:healthFacilityId', healthFacilityController.update);
@@ -42,7 +39,6 @@ userRouter.post('/public-facilities', publicFacilityController.store);
 userRouter.patch('/public-facilities/:publicFacilityId', publicFacilityController.update);
 userRouter.delete('/public-facilities/:publicFacilityId', publicFacilityController.destroy);
 
-userRouter.get('/doctors', doctorController.get);
 userRouter.post('/doctors', doctorController.store);
 userRouter.get('/doctors/:doctorId', doctorController.show);
 userRouter.delete('/doctors/:doctorId', doctorController.destroy);
