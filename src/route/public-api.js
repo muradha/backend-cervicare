@@ -3,6 +3,7 @@ import authController from '../controller/auth-controller.js';
 import articleController from '../controller/article-controller.js';
 import healthFacilityController from '../controller/healthFacility-controller.js';
 import doctorController from '../controller/doctor-controller.js';
+import paymentController from '../controller/payment-controller.js';
 
 const publicRouter = new express.Router();
 
@@ -17,5 +18,7 @@ publicRouter.get('/doctors/:doctorId', doctorController.show);
 
 publicRouter.get('/health-facilities', healthFacilityController.get);
 publicRouter.get('/health-facilities/:healthFacilityId', healthFacilityController.show);
+
+publicRouter.post('/payments/callback', paymentController.callback);
 
 export default publicRouter;

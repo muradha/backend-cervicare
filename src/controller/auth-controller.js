@@ -48,7 +48,7 @@ const generateOtpWhatsapp = async (req, res, next) => {
 
 const verifyOtpWhatsapp = async (req, res, next) => {
   try {
-    const result = await authService.verifyOtp(req);
+    const result = await authService.verifyOtpWhatsapp(req);
 
     res.status(200).json({
       data: result,
