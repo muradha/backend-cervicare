@@ -4,7 +4,7 @@ import { storeDoctorValidation, updateDoctorValidation } from '../validation/doc
 import validate from '../validation/validation.js';
 
 const get = async () => {
-  const [doctor] = await connection.execute('SELECT users.*, doctors.* FROM role_users JOIN users ON role_users.user_id = users.id JOIN doctors ON doctors.user_id = users.id WHERE role_users.role_id = "f1b51f70-9816-452c-99c6-894cd8d43482"');
+  const [doctor] = await connection.execute('SELECT users.name, users.profile_picture, doctors.* FROM role_users JOIN users ON role_users.user_id = users.id JOIN doctors ON doctors.user_id = users.id WHERE role_users.role_id = "f1b51f70-9816-452c-99c6-894cd8d43482"');
 
   return doctor;
 };

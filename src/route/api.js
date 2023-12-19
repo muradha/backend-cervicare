@@ -8,6 +8,7 @@ import uploadFile from '../utils/uploadFile.js';
 import doctorController from '../controller/doctor-controller.js';
 import doctorRatingController from '../controller/doctorRating-controller.js';
 import authController from '../controller/auth-controller.js';
+import paymentController from '../controller/payment-controller.js';
 
 const userRouter = new express.Router();
 
@@ -21,7 +22,6 @@ userRouter.post('/articles', articleController.store);
 userRouter.delete('/articles/:articleId', articleController.destroy);
 userRouter.patch('/articles/:articleId', articleController.update);
 
-userRouter.get('/health-facilities/:healthFacilityId', healthFacilityController.show);
 userRouter.post('/health-facilities', healthFacilityController.store);
 userRouter.patch('/health-facilities/:healthFacilityId', healthFacilityController.update);
 userRouter.delete('/health-facilities/:healthFacilityId', healthFacilityController.destroy);
@@ -40,7 +40,6 @@ userRouter.patch('/public-facilities/:publicFacilityId', publicFacilityControlle
 userRouter.delete('/public-facilities/:publicFacilityId', publicFacilityController.destroy);
 
 userRouter.post('/doctors', doctorController.store);
-userRouter.get('/doctors/:doctorId', doctorController.show);
 userRouter.delete('/doctors/:doctorId', doctorController.destroy);
 userRouter.patch('/doctors/:doctorId', doctorController.update);
 
@@ -48,5 +47,8 @@ userRouter.post('/doctor-ratings', doctorRatingController.store);
 
 userRouter.post('/generate-otp/whatsapp', authController.generateOtpWhatsapp);
 userRouter.post('/verify-otp/whatsapp', authController.verifyOtpWhatsapp);
+
+// userRouter.get('/payments', paymentController.get);
+userRouter.post('/payments', paymentController.create);
 
 export default userRouter;
