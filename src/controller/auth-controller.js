@@ -18,6 +18,7 @@ const login = async (req, res, next) => {
     const payload = {
       id: result[0].id,
       email: result[0].email,
+      name: result[0].name,
     };
 
     const secret = process.env.JWT_SECRET;

@@ -39,7 +39,7 @@ const register = async (request) => {
 const login = async (request) => {
   const user = await validate(loginUserValidation, request);
 
-  const [userFound] = await connection.execute('SELECT * FROM users WHERE email = ? LIMIT 1', [user.email]);
+  const [userFound] = await connection.execute('SELECT id,name,email,gender,password FROM users WHERE email = ? LIMIT 1', [user.email]);
 
   if (userFound.length === 0) {
     throw new ResponseError(404, 'User Not Found');
