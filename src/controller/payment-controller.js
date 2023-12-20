@@ -24,6 +24,17 @@ const create = async (req, res, next) => {
   }
 };
 
+const check = async (req, res, next) => {
+  try {
+    const { order_id: orderId } = req.body;
+    const result = await paymentService.check(orderId);
+
+    res.status(200).json({ data: result });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const callback = async (req, res, next) => {
   try {
     const result = await paymentService.callback(req);
@@ -40,4 +51,5 @@ export default {
   get,
   create,
   callback,
+  check,
 };

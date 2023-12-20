@@ -20,5 +20,6 @@ publicRouter.get('/health-facilities', healthFacilityController.get);
 publicRouter.get('/health-facilities/:healthFacilityId', healthFacilityController.show);
 
 publicRouter.post('/payments/callback', paymentController.callback);
+publicRouter.post('/payments/check', paymentController.check);
 
 export default publicRouter;

@@ -50,7 +50,12 @@ const create = async (req) => {
   const invoice = await createInvoiceRequest(data);
   const [order] = await connection.execute('UPDATE orders SET payment_url = ? WHERE id = ?', [invoice.invoiceUrl, orderId]);
 
-  return order;
+  const result = {
+    orderId,
+    paymentUrl: invoice.invoiceUrl,
+  };
+
+  return result;
 };
 
 const callback = async (req) => {
@@ -76,10 +81,21 @@ const callback = async (req) => {
   }
 
   return updateOrder;
-}
+};
+
+const check = async (orderId) => {
+  const [order] = await connection.execute('SELECT status FROM orders WHERE id = ? LIMIT 1', [orderId]);
+
+  if (order.length <= 0) {
+    throw new ResponseError(404, 'Order Not Found');
+  }
+
+  return order[0];
+};
 
 export default {
   get,
   create,
   callback,
+  check,
 };
